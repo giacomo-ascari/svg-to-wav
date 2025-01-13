@@ -94,8 +94,11 @@ if args.verbose:
 
 # Normalize the audio
 
-points_inter[:,0] = (points_inter[:,0] - np.min(points_inter[:,0])) / (np.max(points_inter[:,0]) - np.min(points_inter[:,0]))
-points_inter[:,1] = (points_inter[:,1] - np.min(points_inter[:,1])) / (np.max(points_inter[:,1]) - np.min(points_inter[:,1]))
+points_inter[:,0] = points_inter[:,0] - np.average(points_inter[:,0]) # center x
+points_inter[:,1] = points_inter[:,1] - np.average(points_inter[:,1]) # center y
+
+max = np.max(np.abs(points_inter))
+points_inter = points_inter / max
 
 if args.verbose:
     print("Audio normalized")
@@ -126,4 +129,8 @@ if args.plot:
     axs[1,1].plot(points_inter[:,0], '.-')
     axs[0,2].plot(y_raw, '.-')
     axs[1,2].plot(points_inter[:,1], '.-')
+    plt.show()
+    fig, axs = plt.subplots(2,1)
+    axs[0].plot(points_inter[:,0], '.-')
+    axs[1].plot(points_inter[:,1], '.-')
     plt.show()
